@@ -15,13 +15,6 @@ class Drawing_Information:
     GREY = (128, 128, 128)
     BACKGROUND_COLOR = BLACK
 
-
-    #sounds
-    before_swap = pygame.mixer.Sound("b4.mp3")
-    after_swap = pygame.mixer.Sound("aftr.mp3")
-    after_swap.set_volume(0.1)
-    before_swap.set_volume(0.3)
-
     #fonts
     p_font = pygame.font.SysFont('Ariel', 30)
     header_font = pygame.font.SysFont('Ariel', 50)
@@ -144,11 +137,9 @@ def bubble_sort(draw_info: Drawing_Information):
             tmp1 = lst[j]
             tmp2 = lst[j + 1]
             if (tmp1 > tmp2):
-                draw_info.before_swap.play()
                 lst[j], lst[j + 1] = lst[j + 1], lst[j]
                 draw_bars(draw_info, {j : draw_info.RED, j + 1 : draw_info.GREEN},True)
                 yield True
-                draw_info.after_swap.play()
         
 
     return lst
@@ -159,12 +150,10 @@ def insertion_sort(draw_info: Drawing_Information):
     for i in range(1, len(lst)):
         j = i
         while j > 0 and lst[j-1] > lst[j]:
-            draw_info.before_swap.play()
             lst[j], lst[j-1] = lst[j-1], lst[j]
             draw_bars(draw_info, {j : draw_info.RED, j - 1 : draw_info.GREEN}, True)
             yield True
             j -= 1
-        draw_info.after_swap.play()
     
     return lst
 
@@ -176,12 +165,10 @@ def selection_sort(draw_info: Drawing_Information):
         for j in range(i + 1, len(lst)):
             if lst[j] < lst[min]:
                 min = j
-                draw_info.before_swap.play()
                 draw_bars(draw_info, {i : draw_info.RED, min : draw_info.GREEN}, True)
                 yield True
                 
         lst[i], lst[min] = lst[min], lst[i]
-        draw_info.after_swap.play()
 
     return lst
  
@@ -193,16 +180,13 @@ def partition(draw_info: Drawing_Information, low, high):
     for j in range(low, high):
         if lst[j] <= pivot:
             i += 1
-            draw_info.before_swap.play()
             lst[i], lst[j] = lst[j], lst[i]
             draw_bars(draw_info, {i : draw_info.RED, j : draw_info.GREEN}, True)
             yield True
-            draw_info.after_swap.play()
 
     lst[i + 1], lst[high] = lst[high], lst[i + 1]
     draw_bars(draw_info, {i + 1 : draw_info.GREEN, high : draw_info.RED}, True)
     yield True
-    draw_info.after_swap.play()
 
     return i + 1
 
@@ -230,26 +214,20 @@ def merge(draw_info: Drawing_Information, l, m, r):
         if lst[l] <= lst[start2]:
             l += 1
         else:
-            draw_info.before_swap.play()
             value = lst[start2]
             index = start2
             draw_bars(draw_info, {index : draw_info.RED, index - 1 : draw_info.GREEN}, True)
             yield True
-            draw_info.after_swap.play()
 
             while index != l:
-                draw_info.before_swap.play()
                 lst[index] = lst[index - 1]
                 draw_bars(draw_info, {index : draw_info.RED, index - 1 : draw_info.GREEN}, True)
                 yield True
-                draw_info.after_swap.play()
                 index -= 1
             
-            draw_info.before_swap.play()
             lst[l] = value
             draw_bars(draw_info, {l : draw_info.GREEN, index : draw_info.GREEN}, True)
             yield True
-            draw_info.after_swap.play()
 
             l += 1
             m += 1
@@ -361,12 +339,6 @@ def main_():
                 #due to this, instead of a time complexity of O(nLogn) it is O(n^2 * Logn)
                 algo_nme = "Merge Sort"
                 curr_algo = merge_sort
-            elif event.key == pygame.K_0:
-                Test.after_swap.set_volume(0)
-                Test.before_swap.set_volume(0)
-            elif event.key == pygame.K_1:
-                Test.after_swap.set_volume(0.1)
-                Test.before_swap.set_volume(1)
 
     pygame.quit()
 
